@@ -45,7 +45,7 @@
                     <div class="searchbtn"></div>
                 </div> -->
 
-                <div class="growing-search">
+                <!-- <div class="growing-search">
                     <form action="{{ url_for('main') }}" method="post">
                     <div class="input ">
                       <input id="searchinput" required type="text" name="search"/>
@@ -56,7 +56,7 @@
                       </button>
                     </div>
                     </form>
-                </div>
+                </div> -->
 
             </div>
             <div class="navElemContainers endnav">
@@ -64,7 +64,7 @@
             </div>
         </nav>
 
-        <div class="searchresult diplay_none">
+        <!-- <div class="searchresult diplay_none">
             <div class="searchNavBar">
                 <div class="searchHeader">Search result for "{{ query }}"</div>
                 <div class="button" onClick="backFunction()">Back</div>
@@ -72,7 +72,7 @@
             </div>
             <div class="dividerthingreen"></div>
             <div class="inputval">{{ result }}</div>
-        </div>
+        </div> -->
 
         
         <div class="home">
@@ -117,25 +117,6 @@
 
             <div class="flex2">
                 <div class="diseasecard ">
-                    <img class="diseaseCardImage" src="{{url_for('static',filename='../static/resources/Feaver.svg')}}" alt="">
-                    <div class="deseaseCardDescription">Covid Detector</div>
-                    <div class="deseaseCardDetail">Welcome to our COVID Detector, an advanced tool leveraging machine learning technology to assist in identifying potential cases of COVID-19. </div>
-                    <div class="diseases">
-                        <div class="buttonColour cgreen"><a href="{{url_for('covid')}}">Check COVID</a></div>
-                    </div>
-                </div>
-                <div class="blackdivider"></div>
-                <div class="diseasecard ">
-                    <img class="diseaseCardImage" src="{{url_for('static',filename='../static/resources/Asd.svg')}}" alt="">
-                    <div class="deseaseCardDescription">Autisum Spectrum Disorder</div>
-                    <div class="deseaseCardDetail">Welcome to our Autism Spectrum Disorder (ASD) Detector, a powerful tool designed to assist in the early identification of potential ASD traits in individuals.</div>
-                    <div class="diseases">
-                        <div class="buttonColour purple"><a href="{{url_for('ASD')}}">Check ASD</a></div>
-                    </div>
-                </div>
-            </div>
-            <div class="flex2">
-                <div class="diseasecard ">
                     <img class="diseaseCardImage" src="{{url_for('static',filename='../static/resources/diabetes.svg')}}" alt="">
                     <div class="deseaseCardDescription">Diabetes Predictor</div>
                     <div class="deseaseCardDetail">Welcome to our Diabetes Predictor, an advanced tool designed to assess your risk of developing diabetes using intelligent algorithms and analysis. </div>
@@ -149,20 +130,18 @@
                     <div class="deseaseCardDescription">More Dignostics Models Under Work!</div>
                 </div>
             </div>
-            <div id="news"></div>
+
+            
            
             
         </div>
         
 
-        <div class="dividergradient" id="dividergradient">
-        </div>
+        <div class="dividergradient" id="dividergradient"></div>
        
       <!-- javascriptFuntion  News API-->
         
-      <div>
-        
-        
+        <div> 
         <script>
           async function f() {
             const res = await fetch(`https://newsapi.org/v2/top-headlines?country=in&category=health&apiKey=4578f91f961d4f7a9760456c71eafc34`);
@@ -193,121 +172,150 @@
             f();
           };
         </script>
-      </div> 
+        </div> 
 
 
-    <div class="newsletter" id="blog">
-        <div class="headerlinesmall">Current Medical Journals and Articles.</div>
-        <div class="newscontainer">
+        <div class="newsletter" id="blog">
+            <div class="headerlinesmall">Current Medical Journals and Articles.</div>
+            <div class="newscontainer">
 
-            <div class="newscardbig">
-                <div class="imagecard">
-                    <img src="{{url_for('static',filename='../static/resources/Doctors-cuate.svg')}}">
-                </div>
-                <div class="newstile1">
-                </div>
-                <!-- <div class="newsdesc">subtext...</div> -->
-                <div  class="buttonsmall"><a class="link1"
-                     href=""
-                     target="_blank">Read</a></div>
-            </div>
-
-            <div class="newscardsmall">
-                <div class="imagecard">
-                    <img src="{{url_for('static',filename='../static/resources/Medicine-amico.svg')}}">
-                </div>
-                <div class="newstilesmall2"></div>
-                <!-- <div class="newsdesc">subtext...</div> -->
-                <div class="buttonsmall"><a class="link2"
-                        href=""
-                        target="_blank">Read</a></div>
-            </div>
-
-            <div class="newscardbig">
-                <div class="imagecard">
-                    <img src="{{url_for('static',filename='../static/resources/Doctors-pana.svg')}}">
-                </div>
-                <div class="newstile3"></div>
-                <!-- <div class="newsdesc">subtext...</div> -->
-                <div class="buttonsmall"><a class="link3"
-                        href=""
-                        target="_blank">Read</a></div>
-            </div>
-
-            
-        </div>
-        <div class="newscontainerlower">
-
-            <div class="newscardsmall">
-                <div class="imagecard">
-                    <img src="{{url_for('static',filename='../static/resources/Medicine-bro.svg')}}">
-                </div>
-                <div class="newstilesmall4"></div>
-                <!-- <div class="newsdesc">subtext...</div> -->
-                <div class="buttonsmall"><a class="link4"
-                        href=""
-                        target="_blank">Read</a></div>
-            </div>
-
-            <div class="newscardbig up30">
-                <div class="imagecard">
-                    <img src="{{url_for('static',filename='../static/resources/Doctors-pana.svg')}}">
-                </div>
-                <div class="newstile5"> </div>
-                <!-- <div class="newsdesc">subtext...</div> -->
-                <div class="buttonsmall"><a  class="link5"
-                        href=""
-                        target="_blank">Read</a></div>
-            </div>
-
-            <div class="newscardsmall">
-                <div class="imagecard">
-                    <img src="{{url_for('static',filename='../static/resources/Medicine-amico.svg')}}">
-                </div>
-                <div class="newstilesmall6"></div>
-                <!-- <div class="newsdesc">subtext...</div> -->
-                <div class="buttonsmall"><a class="link6"
-                        href=""
-                        target="_blank">Read</a></div>
-            </div>
-        </div>
-
-        <div class="innovation_section_divider">
-            <div class="formseperatorlong">
-            </div>
-        </div>
-        <div class="innovation_section">
-   
-            <div class="headerinnovation">What's <span>NEXT</span>?</div>
-              
-            
-              <div class="thought_container">
-                <div class="number">1</div>
-                <div class="verticalline">
-                  <div class="thought_header">Simplifying the input Features and Diversifying our solution!</div>
-                  <div class="thought_subtext">
-                    The main objective is to create a more scalable, robust and evolving model.<br>The present model we made do predict the heart disease but the input parameter at present are not completely elementary. There are a few fields for which you need a few checkups. We want to keep simplifying the input parameters so that we can reach out to more and more people and make better user-experience. We also do plan to make more such model for other disease prediction.
-                  </div>
-                </div>
-                
-              </div>
-              <div class="fleximage">
-        
-                <div class="imagecard_ideasec">
-                  <img src="{{url_for('static',filename='../static/resources/Doctors-cuate.svg')}}">
-                </div>
-        
-                <div class="thought_container2">
-                  <div class="number">2</div>
-                  <div class="verticalline">
-                    <div class="thought_header">A self learning MODEL!</div>
-                    <div class="thought_subtext2">
-                      By asking user for data and adding the right ones into our model we want to increase our training data. By increasing our dataset we can keep tuning the ML model. This will make our project robust scalable therby an ever evolving medical health detector/predictor which can become the first step before the costly hospital option.
+                <div class="newscardbig">
+                    <div class="imagecard">
+                        <img src="{{url_for('static',filename='../static/resources/Doctors-cuate.svg')}}">
                     </div>
-                  </div>
+                    <div class="newstile1">
+                    </div>
+                    <!-- <div class="newsdesc">subtext...</div> -->
+                    <div  class="buttonsmall">
+                        <a class="link1"
+                        href=""
+                        target="_blank">Read</a>
+                    </div>
                 </div>
-        
-              </div>
+
+                <div class="newscardsmall">
+                    <div class="imagecard">
+                        <img src="{{url_for('static',filename='../static/resources/Medicine-amico.svg')}}">
+                    </div>
+                    <div class="newstilesmall2"></div>
+                    <!-- <div class="newsdesc">subtext...</div> -->
+                    <div class="buttonsmall"><a class="link2"
+                            href=""
+                            target="_blank">Read</a>
+                    </div>
+                </div>
+
+                <div class="newscardbig">
+                    <div class="imagecard">
+                        <img src="{{url_for('static',filename='../static/resources/Doctors-pana.svg')}}">
+                    </div>
+                    <div class="newstile3"></div>
+                    <!-- <div class="newsdesc">subtext...</div> -->
+                    <div class="buttonsmall"><a class="link3"
+                            href=""
+                            target="_blank">Read</a></div>
+                </div>
+
+            
+            </div>
+            <div class="newscontainerlower">
+
+                <div class="newscardsmall">
+                    <div class="imagecard">
+                        <img src="{{url_for('static',filename='../static/resources/Medicine-bro.svg')}}">
+                    </div>
+                    <div class="newstilesmall4"></div>
+                    <!-- <div class="newsdesc">subtext...</div> -->
+                    <div class="buttonsmall"><a class="link4"
+                            href=""
+                            target="_blank">Read</a></div>
+                </div>
+
+                <div class="newscardbig up30">
+                    <div class="imagecard">
+                        <img src="{{url_for('static',filename='../static/resources/Doctors-pana.svg')}}">
+                    </div>
+                    <div class="newstile5"> </div>
+                    <!-- <div class="newsdesc">subtext...</div> -->
+                    <div class="buttonsmall"><a  class="link5"
+                            href=""
+                            target="_blank">Read</a></div>
+                </div>
+
+                <div class="newscardsmall">
+                    <div class="imagecard">
+                        <img src="{{url_for('static',filename='../static/resources/Medicine-amico.svg')}}">
+                    </div>
+                    <div class="newstilesmall6"></div>
+                    <!-- <div class="newsdesc">subtext...</div> -->
+                    <div class="buttonsmall"><a class="link6"
+                            href=""
+                            target="_blank">Read</a></div>
+                </div>
+            </div>
+            <div class="dividergradientBW" id="dividergradientBW"></div>
+            <div class="diseaseCarousal">
+                <div class="headerinnovation">Lorem ipsum dolor sit amet. <span>NEXT</span>?</div>
+                <div class="flex3">
+                    <div class="diseasecard_small">
+                        <img class="diseaseCardImage_small" src="{{url_for('static',filename='../static/resources/Feaver.svg')}}" alt="">
+                        <div class="deseaseCardDescription_small">Covid Detector</div>
+                        <div class="deseaseCardDetail_small">Welcome to our COVID Detector, an advanced tool leveraging machine learning technology to assist in identifying potential cases of COVID-19. </div>
+                        <div class="diseases">
+                            <div class="cardbutton_small">
+                                <a href="{{url_for('covid')}}">Check COVID</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="blackdivider"></div>
+                    <div class="diseasecard_small ">
+                        <img class="diseaseCardImage_small" src="{{url_for('static',filename='../static/resources/Asd.svg')}}" alt="">
+                        <div class="deseaseCardDescription_small">Autisum Spectrum Disorder</div>
+                        <div class="deseaseCardDetail_small">Welcome to our Autism Spectrum Disorder (ASD) Detector, a powerful tool designed to assist in the early identification of potential ASD traits in individuals.</div>
+                        <div class="diseases">
+                            <div class="cardbutton_small"><a href="{{url_for('ASD')}}">Check ASD</a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- <div class="innovation_section_divider">
+                <div class="formseperatorlong">
+                </div>
+            </div> -->
+            <div class="innovation_section">
+    
+                    <div class="headerinnovation">What's <span>NEXT</span>?</div>           
+                    <div class="thought_container">
+                        <div class="number">1</div>
+                        <div class="verticalline">
+                            <div class="thought_header">
+                                Simplifying the input Features and Diversifying our solution!
+                            </div>
+                            <div class="thought_subtext">
+                                The main objective is to create a more scalable, robust and evolving model.<br>The present model we made do predict the heart disease but the input parameter at present are not completely elementary. There are a few fields for which you need a few checkups. We want to keep simplifying the input parameters so that we can reach out to more and more people and make better user-experience. We also do plan to make more such model for other disease prediction.
+                            </div>
+                        </div>
+                    
+                    </div>
+                    <div class="fleximage">
+                        <div class="imagecard_ideasec">
+                        <img src="{{url_for('static',filename='../static/resources/Doctors-cuate.svg')}}">
+                        </div>
+                
+                        <div class="thought_container2">
+                        <div class="number">2</div>
+                        <div class="verticalline">
+                            <div class="thought_header">A self learning MODEL!</div>
+                            <div class="thought_subtext2">
+                            By asking user for data and adding the right ones into our model we want to increase our training data. By increasing our dataset we can keep tuning the ML model. This will make our project robust scalable therby an ever evolving medical health detector/predictor which can become the first step before the costly hospital option.
+                            </div>
+                        </div>
+                    </div>
+            
+            </div>
+
+
            
         </div>
 
@@ -325,18 +333,17 @@
             </div>
         </footer>
 
-          <script type ="text/javascript"> 
+        <script type ="text/javascript"> 
             window.addEventListener("scroll",function(){ 
                 var nav = document.querySelector("nav"); 
                 nav.classList.toggle("sticky",window.scrollY > 0); 
             }) 
            
-          </script>
+        </script>
          
           
           
-          <script>
-
+        <script>
                 const button = document.querySelector("#search");   
                 const displaybox = document.querySelector(".searchresult");
                 let searchinput = document.querySelector("#searchinput").value;
@@ -360,12 +367,8 @@
                     displaybox.classList.add('diplay_none');
                     '{% set pred = 0 %}'
                 }
+        </script>
 
-
-
-
-
-          </script>
     </body>
     
 
