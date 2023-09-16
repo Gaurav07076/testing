@@ -88,23 +88,47 @@ def login():
         u = request.form['username']
         p = request.form['password']
         data = User.query.filter_by(username=u, password=p).first()
-        global username
-        if data: username = data.username
+        
         if data is not None:
             session['logged_in'] = True
-            session['email'] = username
+            session['email'] = data.username
             return redirect(url_for('admin'))
         return render_template('login.html', message="Incorrect Details! If not registered.. Please first do so!")
 
 @app.route('/admin',methods=['GET','POST'])
 def admin():
+    return render_template('admin.html')
+    # try:
+    #     print(session.get("email"))
+    # except Exception as e:
+    #     print(e) 
+    
+    # if request.method == 'GET':
+    #     return render_template('patient.html')
+    
+
+
+    # doctor_id = User.query.filter_by(username=session.get("email")).first().id
+    # print(doctor_id)
+    # email = request.form['email']
+    # name = request.form['name']
+    # age = request.form['age']
+    # phone = request.form['phone']
+
+    # db.session.add(Patient(doctor=doctor_id,email=email, name=name,age=age,phone=phone))
+    # db.session.commit()
+
+    # return {"message":"patient created"}
+
+@app.route('/uploadpatient',methods=['GET','POST'])
+def uploadpatient():
     try:
         print(session.get("email"))
     except Exception as e:
         print(e) 
     
     if request.method == 'GET':
-        return render_template('patient.html')
+        return render_template('uploadpatient.html')
     
 
 
@@ -119,6 +143,7 @@ def admin():
     db.session.commit()
 
     return {"message":"patient created"}
+
     
 @app.route('/patients',methods=['GET','POST'])
 def patients():
@@ -159,8 +184,16 @@ def main():
     
     else:
         try:
-            patient_id = request.get_json()
+            print(request.get_json)
+            patient_id = request.json['patient']
+
+            global patient_email
+            patient_email = request.json['email']
+
+            # 
+            # patient_email = request.get_json().email
             print(patient_id)
+            print(patient_email)
             session["patient_id"]=patient_id
            
             return render_template('main.html')
@@ -202,17 +235,31 @@ def predictPage_heart():
             to_predict_list = list(map(float, list(to_predict_dict.values())))
             pred = predict(heart_model,to_predict_list, to_predict_dict)
   
-            patient_id = session.get('patient_id')['patient']
-            patient_id = int(patient_id)
-            print(patient_id)
-            print(type(patient_id))
+            try:
+                print(session)
+                patient_id = session.get('patient_id')
+                patient_id = int(patient_id)
+                print(patient_id)
+                print(type(patient_id))
 
-            patient = Patient.query.filter_by(id=patient_id).first()
-            print(patient)
+            
+            
+                patient = Patient.query.filter_by(id=patient_id).first()
+                print(patient)
 
-            if patient:
-                patient.heart_disease = int(pred)
-                db.session.commit()
+                if patient:
+                    patient.heart_disease = int(pred)
+                    db.session.commit()
+            
+            except Exception as e:
+                print(e)
+            
+            # patient = Patient.query.filter_by(id=patient_id).first()
+            # print(patient)
+
+            # if patient:
+            #     patient.heart_disease = int(pred)
+            #     db.session.commit()
         
             
             return render_template('predict_heart.html', pred = pred)
@@ -229,7 +276,7 @@ def predictPage_heart():
 @app.route("/email_heart",methods= ['POST', 'GET'])
 def email_heart_pos():
      if request.method=='POST':
-        msg = Message("Heart_results",sender='medaware@demo.co',recipients=[username])
+        msg = Message("Heart_results",sender='medaware@demo.co',recipients=[patient_email])
         msg.body = "Great! Your heart looks to be in great condition! Here is what you can do to continue having a healthy heart\n 1. Take a 10-minute walk. If you don't exercise at all, a brief walk is a great way to start.\n\n2. Give yourself a lift. Lifting a hardcover book or a two-pound weight a few times a day can help tone your arm muscles.\n\n3. Eat one extra fruit or vegetable a day.\n\n4. Make breakfast count. Start the day with some fruit and a serving of whole grains, like oatmeal, bran flakes, or whole-wheat toast.\n\n5. Have a handful of nuts. Walnuts, almonds, peanuts, and other nuts are good for your heart.\n\n6. Sample the fruits of the sea. Eat fish or other types of seafood instead of red meat once a week. It's good for the heart, the brain, and the waistline.\n\n7. Breathe deeply. Try breathing slowly and deeply for a few minutes a day. It can help you relax.\n\n8. Wash your hands often. Scrubbing up with soap and water often during the day is a great way to protect your heart and health. The flu, pneumonia, and other infections can be very hard on the heart.\n\n9. Count your blessings. Taking a moment each day to acknowledge the blessings in your life is one way to start tapping into other positive emotions. These have been linked with better health, longer life, and greater well-being, just as their opposites — chronic anger, worry, and hostility."     
         mail.send(msg)
         return render_template('predict_heart.html', pred = 0, message="Mail sent")
@@ -237,7 +284,7 @@ def email_heart_pos():
 @app.route("/email_heart_neg",methods= ['POST', 'GET']) 
 def email_heart_neg():
      if request.method=='POST':
-          msg = Message("Heart_results",sender='medaware@demo.co',recipients=[username])
+          msg = Message("Heart_results",sender='medaware@demo.co',recipients=[patient_email])
           msg.body = "Oopss!! There are chances you might be afflicted with a heart disease . Go get your clinical tests done and consult with your doctor asap. There is no need to panic. It is just a prediction which may be even be incorrect."
           mail.send(msg)
           return render_template('predict_heart.html', pred = 1, message="Mail sent")    
@@ -258,7 +305,7 @@ def predictPage_liver():
 @app.route("/email_liver",methods= ['POST', 'GET'])
 def email_liver_pos():
      if request.method=='POST':
-        msg = Message("Liver_results",sender='medaware@demo.co',recipients=[username])
+        msg = Message("Liver_results",sender='medaware@demo.co',recipients=[patient_email])
         msg.body = "GREAT! you are in good Health. Kudos! Your Liver seems healthy. You could follow the below suggestions for further"     
         mail.send(msg)
         return render_template('predict_liver.html', pred = 0, message="Mail sent")
@@ -266,7 +313,7 @@ def email_liver_pos():
 @app.route("/email_liver_neg",methods= ['POST', 'GET']) 
 def email_liver_neg():
      if request.method=='POST':
-          msg = Message("Liver_results",sender='medaware@demo.co',recipients=[username])
+          msg = Message("Liver_results",sender='medaware@demo.co',recipients=[patient_email])
           msg.body = "Oopss!! There are chances you might be afflicted with a liver disorder . Go get your clinical tests done and consult with your doctor asap. There is no need to panic. It is just a prediction which may be even be incorrect."
           mail.send(msg)
           return render_template('predict_liver.html', pred = 1, message="Mail sent") 
@@ -289,7 +336,7 @@ def predictPage_ASD():
 @app.route("/email_asd",methods= ['POST', 'GET'])
 def email_asd_pos():
      if request.method=='POST':
-        msg = Message("Autisum Disorder results",sender='medaware@demo.co',recipients=[username])
+        msg = Message("Autisum Disorder results",sender='medaware@demo.co',recipients=[patient_email])
         msg.body = "Great! Your look to be in great condition! Here is what you can do to avoid this disorder. \n\nLive healthy. Have regular check-ups, eat well-balanced meals, and exercise. \nMake sure you have good prenatal care, and take all recommended vitamins and supplements. \nDon’t take drugs during pregnancy. Ask your doctor before you take any medication. This is especially true for some anti-seizure drugs. \nAvoid alcohol. Say “no” to that glass of wine -- and any kind of alcoholic beverage -- while you’re pregnant. Seek treatment for existing health conditions. If you've been diagnosed with celiac disease or PKU, follow your doctor’s advice for keeping them under control. \nGet vaccinated. Make sure you get the German measles (rubella) vaccine before you get pregnant. It can prevent rubella-associated autism."     
         mail.send(msg)
         return render_template('predict_ASD.html', pred = 0, message="Mail sent")
@@ -297,7 +344,7 @@ def email_asd_pos():
 @app.route("/email_asd_neg",methods= ['POST', 'GET']) 
 def email_asd_neg():
      if request.method=='POST':
-          msg = Message("Autisum Disorder results",sender='medaware@demo.co',recipients=[username])
+          msg = Message("Autisum Disorder results",sender='medaware@demo.co',recipients=[patient_email])
           msg.body = "Oopss!! There are chances you might be suffering from Autism sprectrum disorder. Go get your clinical tests done and consult with your doctor asap. There is no need to panic. It is just a prediction which may be even be incorrect."
           mail.send(msg)
           return render_template('predict_ASD.html', pred = 1, message="Mail sent") 
@@ -320,7 +367,7 @@ def predictPage_diabetes():
 @app.route("/email_diabetes",methods= ['POST', 'GET'])
 def email_di_pos():
      if request.method=='POST':
-        msg = Message("Diabetes_results",sender='medaware@demo.co',recipients=[username])
+        msg = Message("Diabetes_results",sender='medaware@demo.co',recipients=[patient_email])
         msg.body = "Great! Your looks to be in great condition! Here is what you can do to continue being healthy heart\n 1. Take a 10-minute walk. If you don't exercise at all, a brief walk is a great way to start.\n\n2. Give yourself a lift. Lifting a hardcover book or a two-pound weight a few times a day can help tone your arm muscles.\n\n3. Eat one extra fruit or vegetable a day.\n\n4. Make breakfast count. Start the day with some fruit and a serving of whole grains, like oatmeal, bran flakes, or whole-wheat toast.\n\n5. Have a handful of nuts. Walnuts, almonds, peanuts, and other nuts are good for your heart.\n\n6. Sample the fruits of the sea. Eat fish or other types of seafood instead of red meat once a week. It's good for the heart, the brain, and the waistline.\n\n7. Breathe deeply. Try breathing slowly and deeply for a few minutes a day. It can help you relax.\n\n8. Wash your hands often. Scrubbing up with soap and water often during the day is a great way to protect your heart and health. The flu, pneumonia, and other infections can be very hard on the heart.\n\n9. Count your blessings. Taking a moment each day to acknowledge the blessings in your life is one way to start tapping into other positive emotions. These have been linked with better health, longer life, and greater well-being, just as their opposites — chronic anger, worry, and hostility."     
         mail.send(msg)
         return render_template('predict_diabetes.html', pred = 0, message="Mail sent")
@@ -328,7 +375,7 @@ def email_di_pos():
 @app.route("/email_diabetes_neg",methods= ['POST', 'GET']) 
 def email_di_neg():
      if request.method=='POST':
-          msg = Message("Heart_results",sender='medaware@demo.co',recipients=[username])
+          msg = Message("Heart_results",sender='medaware@demo.co',recipients=[patient_email])
           msg.body = "Oopss!! There are chances you might be suffering from diabetes. Go get your clinical tests done and consult with your doctor asap. There is no need to panic. It is just a prediction which may be even be incorrect."
           mail.send(msg)
           return render_template('predict_diabetes.html', pred = 1, message="Mail sent") 
@@ -376,84 +423,3 @@ if __name__ == '__main__':
         db.create_all()
         app.run(debug=True,port=5002)
 
-# original requirment.txt
-# absl-py==1.4.0
-# astunparse==1.6.3
-# beautifulsoup4==4.12.2
-# blinker==1.6.2
-# cachetools==5.3.0
-# certifi==2022.12.7
-# charset-normalizer==3.1.0
-# click==8.1.3
-# colorama==0.4.6
-# contourpy==1.0.7
-# cycler==0.11.0
-# Cython==0.29.34
-# distlib==0.3.6
-# docopt==0.6.2
-# filelock==3.9.0
-# Flask==2.2.3
-# Flask-Mail==0.9.1
-# Flask-SQLAlchemy==3.0.3
-# flatbuffers==23.3.3
-# fonttools==4.39.3
-# gast==0.4.0
-# google-auth==2.16.2
-# google-auth-oauthlib==1.0.0
-# google-pasta==0.2.0
-# greenlet==2.0.2
-# grpcio==1.51.3
-# h5py==3.9.0
-# idna==3.4
-# itsdangerous==2.1.2
-# jax==0.4.6
-# Jinja2==3.1.2
-# joblib==1.2.0
-# Js2Py==0.74
-# keras==2.12.0
-# kiwisolver==1.4.4
-# libclang==15.0.6.1
-# Markdown==3.4.1
-# MarkupSafe==2.1.2
-# matplotlib==3.7.1
-# numpy==1.23.5
-# oauthlib==3.2.2
-# opencv-python==4.7.0.72
-# opt-einsum==3.3.0
-# packaging==23.0
-# pandas==1.5.3
-# Pillow==9.5.0
-# pipwin==0.5.2
-# platformdirs==3.1.1
-# protobuf==4.22.1
-# pyasn1==0.4.8
-# pyasn1-modules==0.2.8
-# pyjsparser==2.7.1
-# pyparsing==3.0.9
-# PyPrind==2.11.3
-# pySmartDL==1.3.4
-# python-dateutil==2.8.2
-# pytz==2022.7.1
-# pytz-deprecation-shim==0.1.0.post0
-# requests==2.28.2
-# requests-oauthlib==1.3.1
-# rsa==4.9
-# scikit-learn 
-# scipy==1.10.1
-# six==1.16.0
-# soupsieve==2.4.1
-# SQLAlchemy==2.0.13
-# tensorboard==2.12.3
-# tensorboard-data-server==0.7.0
-# tensorflow==2.12.0
-# tensorflow-estimator==2.12.0
-# tensorflow-intel==2.12.0
-# tensorflow-io-gcs-filesystem==0.31.0
-# termcolor==2.3.0
-# threadpoolctl==3.1.0
-# typing_extensions==4.5.0
-# tzdata==2023.3
-# tzlocal==4.3
-# urllib3==1.26.15
-# Werkzeug==2.3.4
-# wrapt==1.14.1
